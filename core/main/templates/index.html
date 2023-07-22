@@ -1,0 +1,332 @@
+{% load i18n %}
+{% load static %}
+{% load convert_value_filter %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ header_sidebar.doc_title }}</title>
+    <link rel="stylesheet" href="{% static 'css/icon.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="header_menu_close">
+        <span class="cross" onclick="menuFunc(event)"><i class="fa-solid fa-xmark"></i></span>
+        <div class="header_menu_container">
+            <ul>
+                <li><a href="#homepage">{{ header_sidebar.path1 }}</a></li>
+                <li><a href="#about">{{ header_sidebar.path2 }}</a></li>
+                <li><a href="#menu">{{ header_sidebar.path3 }}</a></li>
+                <li><a href="#specials">{{ header_sidebar.path4 }}</a></li>
+                <li><a href="#events">{{ header_sidebar.path5 }}</a></li>
+                <li><a href="#gallery">{{ header_sidebar.path6 }}</a></li>
+                <li><a href="#chefs">{{ header_sidebar.path7 }}</a></li>
+                <li><a href="#contact">{{ header_sidebar.path8 }}</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="background: url({{homepage.background.url }}) no-repeat top; background-blend-mode: multiply; background-color: rgba(0, 0, 0, 0.4862745098);" class="section" id="homepage">
+        <div class="header">
+            <div class="header_container">
+                <div>
+                    <span><i class="fa-solid fa-phone"></i> {{ header_sidebar.phone_numer }}</span>
+                    <span><i class="fa-regular fa-clock"></i> {{ header_sidebar.open_times }}</span>
+                </div>
+                <div>
+                    <a href="/en">{{ header_sidebar.language1 }}</a>
+                    <a href="/ru">{{ header_sidebar.language2 }}</a>
+                </div>
+            </div>
+        </div>
+        <header>
+            <div class="general_header_container">
+                <h1>{{ header_sidebar.title }}</h1>
+                <ul>
+                    <li><a href="#homepage">{{ header_sidebar.path1 }}</a></li>
+                    <li><a href="#about">{{ header_sidebar.path2 }}</a></li>
+                    <li><a href="#menu">{{ header_sidebar.path3 }}</a></li>
+                    <li><a href="#specials">{{ header_sidebar.path4 }}</a></li>
+                    <li><a href="#events">{{ header_sidebar.path5 }}</a></li>
+                    <li><a href="#gallery">{{ header_sidebar.path6 }}</a></li>
+                    <li><a href="#chefs">{{ header_sidebar.path7 }}</a></li>
+                    <li><a href="#contact">{{ header_sidebar.path8 }}</a></li>
+                </ul>
+                <a href="#reservation"><button>{{ header_sidebar.btn_name }}</button></a>
+                <div onclick="menuFunc(event)" class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </div>
+        </header>
+        <div class="homepage_container">
+            <div class="homepage_content">
+                <h1>{{ homepage.title }} <span>{{ homepage.colored_title }}</span></h1>
+                <p>{{ homepage.subtitle }}</p>
+                <div>
+                    <a href="#menu"><button>{{ homepage.btn_name1 }}</button></a>
+                    <a href="#reservation"><button>{{ homepage.btn_name2 }}</button></a>
+                </div>
+            </div>
+            <div class="wrapper">
+                <div class="video-main">
+                  <div class="promo-video">
+                    <div class="waves-block">
+                      <div class="waves wave-1"></div>
+                      <div class="waves wave-2"></div>
+                      <div class="waves wave-3"></div>
+                    </div>
+                  </div>
+                  <a href="https://youtu.be/bgfdqVmVjfk" class="video video-popup mfp-iframe" data-lity><i class="fa fa-play"></i></a>
+                </div>
+              </div>
+        </div>
+    </div>
+    <section style="background: url({{ about.background.url }}) no-repeat center;  background-blend-mode: multiply; background-attachment: fixed; background-color: rgba(0, 0, 0, 0.768627451);" class="section" id="about">
+        <div class="about_container">
+            <div class="about_info">
+                <h3>{{ about.title }}</h3>
+                <p><i>{{ about.text1 }}</i></p>
+                <ul>
+                    {% for i in about_content %}
+                        <li><i class="{{ i.icon }}"></i>{{ i.text }}</li>
+                    {% endfor %}
+                </ul>
+                <p>{{ about.text2 }}</p>
+            </div>
+            <div style="background: url({{ about.img.url }}) no-repeat; background-size: cover;" class="image"></div>
+        </div>
+    </section>
+    <section  class="reasons">
+        <div class="title">
+            <span>{{ titles.title1 }}</span>
+            <h2>{{ titles.subtitle1 }}</h2>
+        </div>
+        <div class="reasons_container">
+            {% for i in reasons %}
+                <div class="reasons_content">
+                    <span>0{{ i.id }}</span>
+                    <h3>{{ i.title }}</h3>
+                    <p>{{ i.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="section" id="menu">
+        <div class="title">
+            <span>{{ titles.title2 }}</span>
+            <h2>{{ titles.subtitle2 }}</h2>
+        </div>
+        <ul>
+            {% for i in menu %}
+                <li class="{% if forloop.counter == 1 %}food_category_active{% endif %}" onclick="foodSort(event)" data-category="{% if forloop.counter == 1 %}all{% else %}{{ i.category }}{% endif %}">{{ i.category }}</li>
+            {% endfor %}
+        </ul>
+        <div class="menu_container">
+            {% for i in menu_content %}
+                <div data-category="{{ i.category }}" class="menu_content">
+                    <img src="{{ i.img.url }}" alt="">
+                    <div class="menu_info">
+                        <div>
+                            <h4>{{ i.name }}</h4>
+                            <span>{{ i.price|convert_currency:request.LANGUAGE_CODE }}</span>
+                        </div>
+                        <p>{{ i.recipe }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="section" id="specials">
+        <div class="title">
+            <span>{{ titles.title3 }}</span>
+            <h2>{{ titles.subtitle3 }}</h2>
+        </div>
+        <div class="specials_container">
+            <ul>
+                {% for i in specials %}
+                    <li class="{% if forloop.counter == 1 %}special_category_active{% endif %}" onclick="SpecialsFunc(event)" data-category="{% for j in i.name.split %}{{ j }}{% endfor %}">{{ i.name }}</li>
+                {% endfor %}
+            </ul>
+            {% for i in specials %}        
+                <div data-category="{% for j in i.name.split %}{{ j }}{% endfor %}" class="specials_info {% if forloop.counter == 1 %}specials_info_active{% endif %}">
+                    <div>
+                        <h3>{{ i.name }}</h3>
+                        <p><i>{{ i.text1 }}</i></p>
+                        <p>{{ i.text2 }}</p>
+                    </div>
+                    <img src="{{i.img.url }}" alt="">
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section style="  background: url({{ event.background.url }}); background-blend-mode: multiply; background-color: rgba(0, 0, 0, 0.8352941176);" class="section" id="events">
+        <div class="title">
+            <span>{{ titles.title4 }}</span>
+            <h2>{{ titles.subtitle4 }}</h2>
+        </div>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                {% for i in event_slides %}
+                    <div class="swiper-slide">
+                        <img src="{{ i.img.url }}" alt="">
+                        <div class="events_content">
+                            <h3>{{ i.title }}</h3>
+                            <span>{{ i.price|convert_currency:request.LANGUAGE_CODE }}</span>
+                            <p><i>{{ i.text1 }}</i></p>
+                            <ul>
+                                <li>{{ i.offer1 }}</li>
+                                <li>{{ i.offer2 }}</li>
+                                <li>{{ i.offer }}</li>
+                            </ul>
+                            <p>{{ i.text2 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+    <section class="section" id="reservation">
+        <div class="title">
+            <span>{{ titles.title5 }}</span>
+            <h2>{{ titles.subtitle5 }}</h2>
+        </div>
+        <div class="reservation_container">
+            <form method="post">
+                {% csrf_token %}
+                <input name="user_name" style="grid-area: inp1;" type="text" placeholder="{{ reservation.placeholder1 }}">
+                <input name="user_email" style="grid-area: inp2;" type="email" placeholder="{{ reservation.placeholder2 }}">
+                <input name="user_phone" style="grid-area: inp3;" type="text" placeholder="{{ reservation.placeholder3 }}">
+                <input name="user_date" style="grid-area: inp4;" type="date" placeholder="Date">
+                <input name="user_time" style="grid-area: inp5;" type="time" placeholder="Time">
+                <input name="user_count" style="grid-area: inp6;" type="number" placeholder="{{ reservation.placeholder4 }}">
+                <textarea name="user_message" style="grid-area: textarea;" cols="30" rows="10" placeholder="{{ reservation.placeholder5 }}"></textarea>
+                <button style="grid-area: button;">{{ reservation.btn_name }}</button>
+            </form>
+        </div>
+    </section>
+    <section class="section" id="gallery">
+        <div class="title">
+            <span>{{ titles.title6 }}</span>
+            <h2>{{ titles.subtitle6 }}</h2>
+        </div>
+        <div class="gallery_container">
+            <div class="gallery_content"><img src="{{ gallery.img1.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img2.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img3.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img4.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img5.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img6.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img7.url }}" alt=""></div>
+            <div class="gallery_content"><img src="{{ gallery.img8.url }}" alt=""></div>
+        </div>
+    </section>
+    <section class="section" id="chefs">
+        <div class="title">
+            <span>{{ titles.title7 }}</span>
+            <h2>{{ titles.subtitle7 }}</h2>
+        </div>
+        <div class="chefs_container">
+            {% for i in chefs %}
+                <div class="chefs_content">
+                    <img src="{{ i.img.url }}" alt="">
+                    <div class="chefs_info">
+                        <h5>{{ i.name }}</h5>
+                        <span>{{ i.profession }}</span>
+                        <div>
+                            <a href="{{ i.social_url1 }}"><i class="{{ i.social1 }}"></i></a>
+                            <a href="{{ i.social_url2 }}"><i class="{{ i.social2 }}"></i></a>
+                            <a href="{{ i.social_url3 }}"><i class="{{ i.social3 }}"></i></a>
+                            <a href="{{ i.social_url4 }}"><i class="{{ i.social4 }}"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="section" id="contact">
+        <div class="title">
+            <span>{{ titles.title8 }}</span>
+            <h2>{{ titles.subtitle8 }}</h2>
+        </div>
+        <iframe src="{{ contact.google_map }}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="contact_container">
+            <div class="contact_content">
+                {% for i in contact_info %}
+                    <div class="contact_info">
+                        <span><i class="{{ i.icon }}"></i></span>
+                        <div>
+                            <h3>{{ i.title }}</h3>
+                            <p>{{ i.info }}</p>
+                        </div> 
+                    </div>
+                {% endfor %}
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input style="grid-area: inp1;" name="user_name" type="text" placeholder="{{ contact.placeholder1 }}">
+                <input style="grid-area: inp2;" name="user_email" type="email" placeholder="{{ contact.placeholder2 }}">
+                <input style="grid-area: inp3;" name="user_subject" type="text" placeholder="{{ contact.placeholder3 }}">
+                <textarea style="grid-area: textarea;" name="user_message" cols="30" rows="10" placeholder="{{ contact.placeholder4 }}"></textarea>
+                <button style="grid-area: button;">{{ contact.btn_name }}</button>
+            </form>
+        </div>
+    </section>
+    <footer>
+        <div class="footer_top">
+            <div class="footer_top_container">
+                <div class="footer_top_content">
+                    <h3>Restaurantly</h3>
+                    <p>A108 Adam Street NY 535022, USA</p>
+                    <p><strong>Phone:</strong> +374 164811567565</p>
+                    <p><strong>Email:</strong> infoal@example.com</p>
+                    <div>
+                        <a href="https://twitter.com/"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer_top_content">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> About us</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Menu</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Terms of service</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Privacy policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer_top_content">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Deliciousness</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> High Quality</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Happy Treat</a></li>
+                        <li><a href=""><i class="fa-solid fa-chevron-right"></i> Cleanliness</a></li>
+                    </ul>
+                </div>
+                <div class="footer_top_content">
+                    <h4>Our Newsletter</h4>
+                    <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input name="user_email" type="text">
+                        <button>Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer_bottom">
+            <h6>© Copyright <strong>Restaurantly.</strong> All Rights Reserved</h6>
+            <p>Made by <span>Alex</span></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
